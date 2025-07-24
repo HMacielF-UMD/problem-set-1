@@ -43,3 +43,53 @@ def calibration_plot(y_true, y_prob, n_bins=10):
     plt.title("Calibration Plot")
     plt.legend(loc="best")
     plt.show()
+
+    
+
+def run_extra_credit():
+    """
+    Runs calibration and evaluation steps for both models.
+    Assumes data files were created in prior steps.
+    """
+
+    # === 1. Load prediction data from Part 3 and Part 4 ===
+    df_lr = pd.read_csv('data/df_arrests_test_with_predictions.csv')  # Logistic Regression
+    df_dt = pd.read_csv('data/part4_decision_tree_results.csv')       # Decision Tree
+
+    # === 2. Calibration Plots ===
+    print("Calibration Plot - Logistic Regression:")
+    calibration_plot(df_lr['y'], df_lr['pred_lr'], n_bins=5)
+
+    print("Calibration Plot - Decision Tree:")
+    calibration_plot(df_dt['arrested'], df_dt['predicted_risk'], n_bins=5)
+
+    print("Which model is more calibrated?")
+    print("→ Visually inspect the plots. The model whose curve is closer to the 45-degree dashed line is more calibrated.")
+
+    # === 3. Extra Credit Metrics ===
+
+    # --- PPV for Top 50 ---
+    top50_lr = df_lr.sort_values(by='pred_lr', ascending=False).head(50)
+    ppv_lr = top50_lr['y'].mean()
+
+    top50_dt = df_dt.sort_values(by='predicted_risk', ascending=False).head(50)
+    ppv_dt = top50_dt['arrested'].mean()
+
+    print(f"PPV (Top 50) - Logistic Regression: {ppv_lr:.2%}")
+    print(f"PPV (Top 50) - Decision Tree: {ppv_dt:.2%}")
+
+    # --- AUC Scores ---
+    auc_lr = roc_auc_score(df_lr['y'], df_lr['pred_lr'])
+    auc_dt = roc_auc_score(df_dt['arrested'], df_dt['predicted_risk'])
+
+    print(f"AUC - Logistic Regression: {auc_lr:.3f}")
+    print(f"AUC - Decision Tree: {auc_dt:.3f}")
+
+    # --- Interpretation ---
+    print("Do both metrics agree that one model is more accurate than the other?")
+    if auc_lr > auc_dt and ppv_lr > ppv_dt:
+        print("→ Yes, both AUC and PPV suggest that Logistic Regression is more accurate.")
+    elif auc_lr < auc_dt and ppv_lr < ppv_dt:
+        print("→ Yes, both AUC and PPV suggest that Decision Tree is more accurate.")
+    else:
+        print("→ No, the metrics disagree on which model is more accurate.")

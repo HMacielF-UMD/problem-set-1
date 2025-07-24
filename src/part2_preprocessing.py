@@ -104,8 +104,12 @@ def run_preprocessing():
     """
     # 6. I am not sure why we would call pred_universe['num_fel_arrests_last_year'].mean()
     # pred_universe does not have 'num_fel_arrests_last_year' column 
+    print("Mean num_fel_arrests_last_year:", df_arrests['num_fel_arrests_last_year'].mean())
     # 7. Did actually mean df_arrests.head() instead of pred_universe.head()?
     """
+    print("Mean num_fel_arrests_last_year:", df_arrests['num_fel_arrests_last_year'].mean())
+    print(df_arrests.head())
+
 
     # 7. Show first few rows
     print(pred_universe.head())

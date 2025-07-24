@@ -45,8 +45,9 @@ def run_decision_tree():
     gs_cv_dt = GridSearchCV(estimator=dt_model, param_grid=param_grid_dt, cv=cv)
 
     # Prepare features and target
-    X = df.drop(columns=['arrested', 'predicted_risk'])  # Features
-    y = df['arrested']  # Target variable   
+    features = ['num_fel_arrests_last_year', 'current_charge_felony']
+    X = df[features]
+    y = df['y']
     
     # Split the data into training and testing sets
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
