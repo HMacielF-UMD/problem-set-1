@@ -26,8 +26,8 @@ def main():
     decision_tree.run_decision_tree()
 
     # PART 5: Call functions/instanciate objects from calibration_plot
-    evaluation.run_part5_evaluation()
-    
+    calibration_plot.run_extra_credit()
+
 # Print final confirmation
 if __name__ == "__main__":
     main()

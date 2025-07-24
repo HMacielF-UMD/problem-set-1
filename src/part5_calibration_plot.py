@@ -14,8 +14,10 @@ Do both metrics agree that one model is more accurate than the other? Print this
 
 # Import any further packages you may need for PART 5
 from sklearn.calibration import calibration_curve
+from sklearn.metrics import roc_auc_score
 import matplotlib.pyplot as plt
 import seaborn as sns
+import pandas as pd
 
 # Calibration plot function 
 def calibration_plot(y_true, y_prob, n_bins=10):
@@ -53,8 +55,8 @@ def run_extra_credit():
     """
 
     # === 1. Load prediction data from Part 3 and Part 4 ===
-    df_lr = pd.read_csv('data/df_arrests_test_with_predictions.csv')  # Logistic Regression
-    df_dt = pd.read_csv('data/part4_decision_tree_results.csv')       # Decision Tree
+    df_lr = pd.read_csv('data/df_arrests_test_with_predictions.csv') 
+    df_dt = pd.read_csv('data/decision_tree_results.csv')
 
     # === 2. Calibration Plots ===
     print("Calibration Plot - Logistic Regression:")

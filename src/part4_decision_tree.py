@@ -32,7 +32,7 @@ def run_decision_tree():
     '''
     
     # 1. Read in the dataframe
-    df = pd.read_csv('data/part3_data.csv')  # Adjust the path if needed
+    df = pd.read_csv('data/df_arrests_test_with_predictions.csv') 
 
     # 2. Create a parameter grid for Decision Tree
     param_grid_dt = { 'max_depth': [1, 5, 10] }
@@ -66,11 +66,12 @@ def run_decision_tree():
         print("This is in the middle of regularization.")
     
     # 7. Predict for the test set
-    X_test = X_test.copy()  # Avoid SettingWithCopyWarning
-    y_pred_dt = gs_cv_dt.predict(X_test)
-    X_test['pred_dt'] = y_pred_dt
-    X_test['predicted_risk'] = gs_cv_dt.predict_proba(X_test)[:, 1] 
-    X_test['arrested'] = y_test.values 
+    X_test = X_test.copy()
+
+    # Predict class and probability using only the original features
+    X_test['pred_dt'] = gs_cv_dt.predict(X_test[features])
+    X_test['predicted_risk'] = gs_cv_dt.predict_proba(X_test[features])[:, 1]
+    X_test['arrested'] = y_test.values
 
     # 8. Save the results to a CSV file for PART 5
-    X_test.to_csv('data/part4_decision_tree_results.csv', index=False)
+    X_test.to_csv('data/decision_tree_results.csv', index=False)
